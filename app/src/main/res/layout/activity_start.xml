@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_result"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.sonhoai.sonho.catchthefruits.StartActivity"
+    android:gravity="center_horizontal"
+    android:background="#1D62F0">
+
+    <TextView
+        android:textColor="#FFF"
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Catch\nThe Fruits"
+        android:gravity="center"
+        android:layout_marginTop="60dp"
+        android:textSize="40sp"
+        />
+
+    <TableLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp">
+        <TableRow
+            android:layout_gravity="center_horizontal"
+            android:paddingBottom="10dp">
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/a"/>
+            <TextView
+                android:textColor="#FFF"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="5 score"
+                android:paddingLeft="10dp"/>
+        </TableRow>
+        <TableRow
+            android:layout_gravity="center_horizontal"
+            android:paddingBottom="10dp">
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/b"/>
+            <TextView
+                android:textColor="#FFF"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="10 score"
+                android:paddingLeft="10dp"/>
+        </TableRow>
+        <TableRow
+            android:layout_gravity="center_horizontal"
+            android:paddingBottom="10dp">
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/boom"/>
+            <TextView
+                android:textColor="#FFF"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Game Over"
+                android:paddingLeft="10dp"/>
+        </TableRow>
+
+    </TableLayout>
+
+    <FrameLayout
+        android:onClick="startGame"
+        android:layout_marginTop="50dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/layoutPlay"
+        android:background="@drawable/background_play"
+        >
+        <TextView
+            android:textStyle="bold"
+            android:textColor="#FFF"
+            android:textSize="70sp"
+            android:text="Play"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </FrameLayout>
+</LinearLayout>

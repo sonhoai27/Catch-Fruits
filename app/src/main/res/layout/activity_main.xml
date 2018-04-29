@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.sonhoai.sonho.catchthefruits.MainActivity"
+    android:orientation="vertical"
+    android:background="#FFF">
+
+    <RelativeLayout
+        android:id="@+id/layoutBg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/effectBgB">
+
+        <TextView
+            android:layout_margin="10dp"
+            android:textColor="#FFF"
+            android:padding="5dp"
+            android:background="@drawable/bg_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/scoreLabel"
+            android:text="Score: 0"
+            android:textSize="12dp"
+            />
+
+    </RelativeLayout>
+
+    <FrameLayout
+        android:id="@+id/frame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <TextView
+            android:id="@+id/starLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="tap to play"
+            android:textSize="30sp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="130dp"
+            />
+        <ImageView
+            android:foregroundGravity="center_vertical"
+            android:id="@+id/box"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/box"
+            />
+        <ImageView
+            android:id="@+id/box_bg"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:src="@drawable/box"
+            />
+        <ImageView
+            android:id="@+id/black"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@drawable/boom"
+            />
+        <ImageView
+            android:id="@+id/pink"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/b"
+            />
+        <ImageView
+            android:id="@+id/orange"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/a"
+            />
+
+        <RelativeLayout
+            android:id="@+id/quitGame"
+            android:onClick="quitGame"
+            android:layout_gravity="bottom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#1D62F0">
+            <TextView
+                android:gravity="center"
+                android:layout_margin="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Exit"
+                android:textColor="#FFF"
+                android:textSize="25dp"/>
+        </RelativeLayout>
+
+    </FrameLayout>
+
+</LinearLayout>
+
