@@ -1,5 +1,6 @@
 package com.sonhoai.sonho.catchthefruits;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -9,6 +10,7 @@ import android.os.Handler;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.*;
 import android.widget.*;
 
@@ -30,14 +32,13 @@ public class MainActivity extends AppCompatActivity {
     private int orangeX, orangeY, pinkX, pinkY, blackX, blackY;
 
     private boolean action_flg = false;
-    private boolean star_flg = false;
+    private boolean start_flg = false;
 
     private int frameHieght, boxSize;
 
     private int screenWidth;
     private int screenHeight;
 
-    private RelativeLayout relativeLayout;
 
     private int score = 0;
 
@@ -54,7 +55,6 @@ public class MainActivity extends AppCompatActivity {
         box_bg.setVisibility(View.VISIBLE);
         box.setVisibility(View.INVISIBLE);
         scoreLabel.setVisibility(View.INVISIBLE);
-        relativeLayout.setVisibility(View.INVISIBLE);
 
         //get screen size
         WindowManager wm = getWindowManager();
@@ -90,7 +90,6 @@ public class MainActivity extends AppCompatActivity {
         orange = (ImageView) findViewById(R.id.orange);
         pink = (ImageView) findViewById(R.id.pink);
         quitGame = (RelativeLayout) findViewById(R.id.quitGame);
-        relativeLayout = (RelativeLayout) findViewById(R.id.layoutBg);
 
         linearLayout = (LinearLayout) findViewById(R.id.activity_main);
     }
@@ -218,10 +217,9 @@ public class MainActivity extends AppCompatActivity {
 
     public boolean onTouchEvent(MotionEvent me) {
         box.setVisibility(View.VISIBLE);
+        if (!start_flg) {
 
-        if (!star_flg) {
-
-            star_flg = true;
+            start_flg = true;
 
             //do chỉ khi có tương tác thì mới kiểm tra dc cái kích thước, vị trí
             FrameLayout frameLayout = (FrameLayout) findViewById(R.id.frame);
@@ -232,13 +230,13 @@ public class MainActivity extends AppCompatActivity {
             boxY = (int) box.getY();
             boxSize = box.getHeight();
 
-            relativeLayout.setVisibility(View.VISIBLE);
             scoreLabel.setVisibility(View.VISIBLE);
             tapToStar.setVisibility(View.GONE);
             box_bg.setVisibility(View.GONE);
             quitGame.setVisibility(View.GONE);
 
 
+            //game loop
             timer.schedule(new TimerTask() {
                 @Override
                 public void run() {
@@ -262,17 +260,30 @@ public class MainActivity extends AppCompatActivity {
 
         return true;
     }
-
     @Override
-    public boolean dispatchKeyEvent(KeyEvent event) {
-        if (event.getAction() == KeyEvent.ACTION_DOWN) {
-            switch (event.getKeyCode()) {
-                case KeyEvent.KEYCODE_BACK:
-                    return true;
-            }
-        }
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(keyCode == KeyEvent.KEYCODE_BACK){
+            Log.i("LOGGG", "NAHANA");
+            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+            builder.setTitle("Bạn có muốn thoát?");
+            builder.setMessage("Nhấn OK để thoát khỏi màn hình trò chơi");
+            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    timer.cancel();
+                    finish();
+                }
+            });
+            builder.setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
+                }
+            });
 
-        return super.dispatchKeyEvent(event);
+            builder.show();
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
     public void quitGame(View view) {
