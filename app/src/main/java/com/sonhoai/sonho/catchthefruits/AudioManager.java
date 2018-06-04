@@ -12,6 +12,7 @@ public class AudioManager {
     public static int hitSound;
     public static int overSound;
     public static int flySound;
+    public static int bgSound;
 
     public AudioManager(Context context) {
 
@@ -31,6 +32,7 @@ public class AudioManager {
         hitSound = soundPool.load(context, R.raw.hit, 1);
         overSound = soundPool.load(context, R.raw.over, 1);
         flySound = soundPool.load(context, R.raw.fly, 1);
+        bgSound = soundPool.load(context, R.raw.cat, 1);
 
     }
 
@@ -45,4 +47,8 @@ public class AudioManager {
     public void  playFlyrSound(){
         soundPool.play(flySound, 1.0f, 1.0f, 1, 0, 1.0f);
     }
+    public void  playBgSound(){
+        soundPool.play(bgSound, 1.0f, 1.0f, 1, 0, 1.0f);
+    }
+
 }

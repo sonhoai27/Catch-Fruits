@@ -21,15 +21,15 @@ public class MainActivity extends AppCompatActivity {
     private AudioManager audioManager;
     private TextView tapToStar;
     private TextView scoreLabel;
-    private ImageView box, box_bg, black, orange, pink;
+    private ImageView player, box_bg, boom, orange, pink;
 
     LinearLayout linearLayout;
     RelativeLayout quitGame;
 
     private Handler handler = new Handler();
     private Timer timer = new Timer();
-    private int boxY;
-    private int orangeX, orangeY, pinkX, pinkY, blackX, blackY;
+    private int playerY;
+    private int orangeX, orangeY, pinkX, pinkY, boomX, boomY;
 
     private boolean action_flg = false;
     private boolean start_flg = false;
@@ -50,10 +50,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         init();
-
-
         box_bg.setVisibility(View.VISIBLE);
-        box.setVisibility(View.INVISIBLE);
+        player.setVisibility(View.INVISIBLE);
         scoreLabel.setVisibility(View.INVISIBLE);
 
         //get screen size
@@ -75,8 +73,8 @@ public class MainActivity extends AppCompatActivity {
         orange.setY(-80);
         pink.setX(-80);
         pink.setY(-80);
-        black.setX(-80);
-        black.setY(-80);
+        boom.setX(-80);
+        boom.setY(-80);
     }
 
     private void init() {
@@ -84,9 +82,9 @@ public class MainActivity extends AppCompatActivity {
 
         scoreLabel = (TextView) findViewById(R.id.scoreLabel);
         tapToStar = (TextView) findViewById(R.id.starLabel);
-        box = (ImageView) findViewById(R.id.box);
+        player = (ImageView) findViewById(R.id.box);
         box_bg = (ImageView) findViewById(R.id.box_bg);
-        black = (ImageView) findViewById(R.id.black);
+        boom = (ImageView) findViewById(R.id.black);
         orange = (ImageView) findViewById(R.id.orange);
         pink = (ImageView) findViewById(R.id.pink);
         quitGame = (RelativeLayout) findViewById(R.id.quitGame);
@@ -94,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
         linearLayout = (LinearLayout) findViewById(R.id.activity_main);
     }
 
-    public void changePost() {
+    public void changePosition() {
         hitCheck();
         //orange
         orangeX -= speedOrange;
@@ -107,13 +105,13 @@ public class MainActivity extends AppCompatActivity {
         orange.setX(orangeX);
         orange.setY(orangeY);
         //black
-        blackX -= speedBlack;
-        if (blackX < 0) {
-            blackX = screenWidth + 5;
-            blackY = (int) Math.floor(Math.random() * (frameHieght - black.getHeight()));
+        boomX -= speedBlack;
+        if (boomX < 0) {
+            boomX = screenWidth + 5;
+            boomY = (int) Math.floor(Math.random() * (frameHieght - boom.getHeight()));
         }
-        black.setX(blackX);
-        black.setY(blackY);
+        boom.setX(boomX);
+        boom.setY(boomY);
         pinkX -= speedPink;
         if (pinkX < 0) {
             pinkX = screenWidth + 500;
@@ -125,18 +123,18 @@ public class MainActivity extends AppCompatActivity {
         //nếu có chạm vào, thì do box đi lên, co nghĩa là tiền về 0,0
         if (action_flg == true) {
             //touch
-            boxY -= speedBox;
+            playerY -= speedBox;
         } else {
             //release
-            boxY += speedBox;
+            playerY += speedBox;
         }
 
         //phần phía trên
-        if (boxY < 0) boxY = 0;
+        if (playerY < 0) playerY = 0;
         //nếu mà vị trí y của box qua khỏi kích thước màn hình thì đặt lại vị trí y là tọa độ 0, và y là chiều cao - boxsize
         //phần phía dưới
-        if (boxY > frameHieght - boxSize) boxY = frameHieght - boxSize;
-        box.setY(boxY);
+        if (playerY > frameHieght - boxSize) playerY = frameHieght - boxSize;
+        player.setY(playerY);
         scoreLabel.setText("Score: " + score);
     }
 
@@ -147,7 +145,7 @@ public class MainActivity extends AppCompatActivity {
         ///check ở góc 1/4 phía trên trái hoặc 1/4 dưới trái
         if (0 <= orangeCenterX && orangeCenterX <= boxSize
                 &&
-                boxY <= orangeCenterY && orangeCenterY <= boxY + boxSize) {
+                playerY <= orangeCenterY && orangeCenterY <= playerY + boxSize) {
 
             score += 5;
             orangeX = -10;
@@ -160,19 +158,19 @@ public class MainActivity extends AppCompatActivity {
         //boxY <= orangeCenterY <= boxY + boxHeight;
         if (0 <= pinkCenterX && pinkCenterX <= boxSize
                 &&
-                boxY <= pinkCenterY && pinkCenterY <= boxY + boxSize) {
+                playerY <= pinkCenterY && pinkCenterY <= playerY + boxSize) {
 
             score += 10;
             pinkX = -10;
             audioManager.playHitSound();
         }
-        int blackCenterX = blackX + black.getWidth() / 2;
-        int blackCenterY = blackY + black.getHeight() / 2;
+        int blackCenterX = boomX + boom.getWidth() / 2;
+        int blackCenterY = boomY + boom.getHeight() / 2;
         // 0 <= orangeCenterX <= boxWidth;
         //boxY <= orangeCenterY <= boxY + boxHeight;
         if (0 <= blackCenterX && blackCenterX <= boxSize
                 &&
-                boxY <= blackCenterY && blackCenterY <= boxY + boxSize) {
+                playerY <= blackCenterY && blackCenterY <= playerY + boxSize) {
             //game over
             timer.cancel();
             timer = null;
@@ -216,19 +214,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public boolean onTouchEvent(MotionEvent me) {
-        box.setVisibility(View.VISIBLE);
+        player.setVisibility(View.VISIBLE);
         if (!start_flg) {
-
             start_flg = true;
-
             //do chỉ khi có tương tác thì mới kiểm tra dc cái kích thước, vị trí
             FrameLayout frameLayout = (FrameLayout) findViewById(R.id.frame);
             //set chiều cao mặc định
             frameHieght = frameLayout.getHeight();
 
             //lấy ra vị trí y
-            boxY = (int) box.getY();
-            boxSize = box.getHeight();
+            playerY = (int) player.getY();
+            boxSize = player.getHeight();
 
             scoreLabel.setVisibility(View.VISIBLE);
             tapToStar.setVisibility(View.GONE);
@@ -243,7 +239,7 @@ public class MainActivity extends AppCompatActivity {
                     handler.post(new Runnable() {
                         @Override
                         public void run() {
-                            changePost();
+                            changePosition();
                         }
                     });
                 }
