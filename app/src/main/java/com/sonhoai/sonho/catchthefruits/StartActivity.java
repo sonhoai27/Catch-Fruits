@@ -13,7 +13,7 @@ public class StartActivity extends AppCompatActivity {
         setContentView(R.layout.activity_start);
     }
     public void startGame(View view){
-        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        Intent intent = new Intent(getApplicationContext(), GameActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         startActivity(intent);
         overridePendingTransition(0, 0);

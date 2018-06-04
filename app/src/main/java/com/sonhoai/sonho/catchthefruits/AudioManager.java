@@ -48,7 +48,7 @@ public class AudioManager {
         soundPool.play(flySound, 1.0f, 1.0f, 1, 0, 1.0f);
     }
     public void  playBgSound(){
-        soundPool.play(bgSound, 1.0f, 1.0f, 1, 0, 1.0f);
+        soundPool.play(bgSound, 1.0f, 1.0f, 1, 1, 1.0f);
     }
 
 }

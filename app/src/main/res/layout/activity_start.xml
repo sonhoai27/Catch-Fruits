@@ -8,7 +8,7 @@
     android:orientation="vertical"
     tools:context="com.sonhoai.sonho.catchthefruits.StartActivity"
     android:gravity="center_horizontal"
-    android:background="#1D62F0">
+    android:background="#da4a4a">
 
     <TextView
         android:textColor="#FFF"

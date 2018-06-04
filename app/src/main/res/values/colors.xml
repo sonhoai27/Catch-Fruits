@@ -3,6 +3,6 @@
     <color name="colorPrimary">#FFF</color>
     <color name="colorPrimaryDark">#FFF</color>
     <color name="colorAccent">#1D62F0</color>
-    <color name="effectBgY">#ffed24</color>
+    <color name="effectBgY">#1441be</color>
     <color name="effectBgB">#1D62F0</color>
 </resources>

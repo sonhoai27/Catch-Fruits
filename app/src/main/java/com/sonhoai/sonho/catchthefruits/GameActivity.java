@@ -1,6 +1,5 @@
 package com.sonhoai.sonho.catchthefruits;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -17,32 +16,19 @@ import android.widget.*;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class MainActivity extends AppCompatActivity {
+public class GameActivity extends AppCompatActivity {
     private AudioManager audioManager;
-    private TextView tapToStar;
-    private TextView scoreLabel;
-    private ImageView player, box_bg, boom, orange, pink;
-
+    private TextView tapToStar, scoreLabel;
+    private ImageView player, box_bg, boom, fruitA, fruitB;
     LinearLayout linearLayout;
     RelativeLayout quitGame;
-
     private Handler handler = new Handler();
     private Timer timer = new Timer();
-    private int playerY;
-    private int orangeX, orangeY, pinkX, pinkY, boomX, boomY;
-
+    private int playerY, fruitAX, fruitAY, fruitBX, fruitBY, boomX, boomY;
     private boolean action_flg = false;
     private boolean start_flg = false;
-
-    private int frameHieght, boxSize;
-
-    private int screenWidth;
-    private int screenHeight;
-
-
-    private int score = 0;
-
-    private int speedBox, speedOrange, speedBlack, speedPink;
+    private int frameHieght, boxSize,screenWidth, screenHeight;
+    private int score = 0, speedPlayer, speedFruitA, speedBoom, speedFruitB;
 
 
     @Override
@@ -64,15 +50,15 @@ public class MainActivity extends AppCompatActivity {
         screenHeight = size.y;
 
         //điều chỉnh tốc độ khung hình fps trên 1 giây
-        speedBox = Math.round(screenHeight / 60F);
-        speedOrange = Math.round(screenWidth / 60F);
-        speedPink = Math.round(screenWidth / 36F);
-        speedBlack = Math.round(screenWidth / 45F);
+        speedPlayer = Math.round(screenHeight / 50F);
+        speedFruitA = Math.round(screenWidth / 60F);
+        speedFruitB = Math.round(screenWidth / 36F);
+        speedBoom = Math.round(screenWidth / 50F);
 
-        orange.setX(-80);
-        orange.setY(-80);
-        pink.setX(-80);
-        pink.setY(-80);
+        fruitA.setX(-80);
+        fruitA.setY(-80);
+        fruitB.setX(-80);
+        fruitB.setY(-80);
         boom.setX(-80);
         boom.setY(-80);
     }
@@ -85,8 +71,8 @@ public class MainActivity extends AppCompatActivity {
         player = (ImageView) findViewById(R.id.box);
         box_bg = (ImageView) findViewById(R.id.box_bg);
         boom = (ImageView) findViewById(R.id.black);
-        orange = (ImageView) findViewById(R.id.orange);
-        pink = (ImageView) findViewById(R.id.pink);
+        fruitA = (ImageView) findViewById(R.id.orange);
+        fruitB = (ImageView) findViewById(R.id.pink);
         quitGame = (RelativeLayout) findViewById(R.id.quitGame);
 
         linearLayout = (LinearLayout) findViewById(R.id.activity_main);
@@ -95,38 +81,38 @@ public class MainActivity extends AppCompatActivity {
     public void changePosition() {
         hitCheck();
         //orange
-        orangeX -= speedOrange;
+        fruitAX -= speedFruitA;
         //nếu bé hơn trục x, qua tới âm, thì set về mặc định
-        if (orangeX < 0) {
-            orangeX = screenWidth + 20;
+        if (fruitAX < -fruitAX) {
+            fruitAX = screenWidth + 20;
             //random vị trí y, từ trên xuống dưới
-            orangeY = (int) Math.floor(Math.random() * (frameHieght - orange.getHeight()));
+            fruitAY = (int) Math.floor(Math.random() * (frameHieght - fruitA.getHeight()));
         }
-        orange.setX(orangeX);
-        orange.setY(orangeY);
+        fruitA.setX(fruitAX);
+        fruitA.setY(fruitAY);
         //black
-        boomX -= speedBlack;
-        if (boomX < 0) {
+        boomX -= speedBoom;
+        if (boomX < -boomX) {
             boomX = screenWidth + 5;
             boomY = (int) Math.floor(Math.random() * (frameHieght - boom.getHeight()));
         }
         boom.setX(boomX);
         boom.setY(boomY);
-        pinkX -= speedPink;
-        if (pinkX < 0) {
-            pinkX = screenWidth + 500;
-            pinkY = (int) Math.floor(Math.random() * (frameHieght - pink.getHeight()));
+        fruitBX -= speedFruitB;
+        if (fruitBX < 0) {
+            fruitBX = screenWidth + 500;
+            fruitBY = (int) Math.floor(Math.random() * (frameHieght - fruitB.getHeight()));
         }
-        pink.setX(pinkX);
-        pink.setY(pinkY);
+        fruitB.setX(fruitBX);
+        fruitB.setY(fruitBY);
 
         //nếu có chạm vào, thì do box đi lên, co nghĩa là tiền về 0,0
         if (action_flg == true) {
             //touch
-            playerY -= speedBox;
+            playerY -= speedPlayer;
         } else {
             //release
-            playerY += speedBox;
+            playerY += speedPlayer;
         }
 
         //phần phía trên
@@ -140,20 +126,20 @@ public class MainActivity extends AppCompatActivity {
 
     public void hitCheck() {
         //orange
-        int orangeCenterX = orangeX + orange.getWidth() / 2;
-        int orangeCenterY = orangeY + orange.getHeight() / 2;
+        int orangeCenterX = fruitAX + fruitA.getWidth() / 2;
+        int orangeCenterY = fruitAY + fruitA.getHeight() / 2;
         ///check ở góc 1/4 phía trên trái hoặc 1/4 dưới trái
         if (0 <= orangeCenterX && orangeCenterX <= boxSize
                 &&
                 playerY <= orangeCenterY && orangeCenterY <= playerY + boxSize) {
 
             score += 5;
-            orangeX = -10;
+            fruitAX = -10;
             audioManager.playHitSound();
         }
         //pink
-        int pinkCenterX = pinkX + pink.getWidth() / 2;
-        int pinkCenterY = pinkY + pink.getHeight() / 2;
+        int pinkCenterX = fruitBX + fruitB.getWidth() / 2;
+        int pinkCenterY = fruitBY + fruitB.getHeight() / 2;
         // 0 <= orangeCenterX <= boxWidth;
         //boxY <= orangeCenterY <= boxY + boxHeight;
         if (0 <= pinkCenterX && pinkCenterX <= boxSize
@@ -161,7 +147,7 @@ public class MainActivity extends AppCompatActivity {
                 playerY <= pinkCenterY && pinkCenterY <= playerY + boxSize) {
 
             score += 10;
-            pinkX = -10;
+            fruitBX = -10;
             audioManager.playHitSound();
         }
         int blackCenterX = boomX + boom.getWidth() / 2;
@@ -217,6 +203,7 @@ public class MainActivity extends AppCompatActivity {
         player.setVisibility(View.VISIBLE);
         if (!start_flg) {
             start_flg = true;
+            //audioManager.playBgSound();
             //do chỉ khi có tương tác thì mới kiểm tra dc cái kích thước, vị trí
             FrameLayout frameLayout = (FrameLayout) findViewById(R.id.frame);
             //set chiều cao mặc định
@@ -260,7 +247,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if(keyCode == KeyEvent.KEYCODE_BACK){
             Log.i("LOGGG", "NAHANA");
-            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+            AlertDialog.Builder builder = new AlertDialog.Builder(GameActivity.this);
             builder.setTitle("Bạn có muốn thoát?");
             builder.setMessage("Nhấn OK để thoát khỏi màn hình trò chơi");
             builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
